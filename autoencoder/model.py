@@ -15,8 +15,7 @@ class ResNetAutoencoder(nn.Module):
 
     def forward(self, x):
         out = self.enc(x)
-        out = F.sigmoid(out)
+        out = torch.clamp(out, 0.0, 1.0)
         out = out + (1 / 2 ** self.quantize_factor) * (torch.rand_like(out) * 0.5 - 0.5)
-        out = torch.log(out / (1 - out))
         out = self.dec(out)
         return F.sigmoid(out)

@@ -9,11 +9,7 @@ from arithmetic_compressor import AECompressor
 from arithmetic_compressor.models import SimpleAdaptiveModel
 
 from autoencoder.decoder import ResNet18Decoder, ResNetDecBlock
-
-QUANTIZE_MAP = {
-    "hard": 2,
-    "soft": 8
-}
+from utils import QUANTIZE_MAP
 
 
 def dequantize(encoded, mode):

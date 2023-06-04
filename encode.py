@@ -3,18 +3,13 @@ from argparse import ArgumentParser
 import numpy as np
 import torch
 import torchvision.transforms as tf
-import torch.nn.functional as F
 from PIL import Image
 import pickle
 from arithmetic_compressor import AECompressor
 from arithmetic_compressor.models import SimpleAdaptiveModel
 
 from autoencoder.encoder import ResNet18Encoder
-
-QUANTIZE_MAP = {
-    "hard": 2,
-    "soft": 8
-}
+from utils import QUANTIZE_MAP
 
 
 def quantize(encoded, mode):
@@ -46,7 +41,7 @@ def encode():
     img = Image.open(args.input_path)
     sample = tf.ToTensor()(img).unsqueeze(0).to(device)
 
-    encoded = F.sigmoid(encoder(sample).cpu())[0].detach().numpy()
+    encoded = torch.clamp(encoder(sample).cpu(), 0.0, 1.0)[0].detach().numpy()
     quantized = quantize(encoded, args.quantize_mode)
     data, length = arithm_encode(quantized, args.quantize_mode)
     result = str(int("".join(map(str, [1] + data)), 2)) + "," + str(length)
