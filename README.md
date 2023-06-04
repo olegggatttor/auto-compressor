@@ -1,5 +1,7 @@
 # AutoCompressor
 
+*@author Бобров Олег Борисович, группа М4150*
+
 This repository contains source code for neural compressor. Model was build using **autoencoder** architecture. 
 For encoder part pretrained ResNet18 was used. Decoder is mirrored representation of encoder with upsampling layers. 
 
