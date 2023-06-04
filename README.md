@@ -23,6 +23,10 @@ You can run them all using [test_all.sh](test_all.sh)
 Autoencoders were trained using [130k Images (512x512) - Universal Image Embeddings](https://www.kaggle.com/datasets/rhtsingh/130k-images-512x512-universal-image-embeddings)
 dataset. MSE loss was used in both cases. You can find training notebook [here](notebooks/autocompressor_train.ipynb).
 
+## Weights
+
+You can download trained weights from [Google Drive](https://drive.google.com/drive/u/0/folders/1HjcGjdWEY1un_hlVvmX5hlzkH-_v8PMH)
+
 ## Encoding
 
 ### Soft (B = 10)
