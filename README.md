@@ -6,15 +6,23 @@ This repository contains source code for neural compressor. Model was build usin
 For encoder part pretrained ResNet18 was used. Decoder is mirrored representation of encoder with upsampling layers. 
 
 Latent vector obtained after encoding part is quantized (hard mode with B = 2 and sof mode with B = 10) 
-and then encoded using adaptive arithmetic encoding. Embedding size is *1 x 32768* which is only *0.125* of the initial amount of pixels *(512 x 512)*.
+and then encoded using nonbinary adaptive arithmetic encoding. Embedding size is *1 x 32768* which is only *0.125* of the initial amount of pixels *(512 x 512)*.
+Qunatization during inference is performed with this formula: 
 
-Below you can find charts of BPP and PSNR comparison between JPG, AE(B=2) and AE(B=10) algorithms on three [test images](resources/test_images).
+![equation](https://latex.codecogs.com/svg.image?b_i%20=%20%5Clfloor%20f_i%5Ctimes%202%5EB%20&plus;%200.5%20%5Crfloor)
+
+The problem is that this quantization is not differentiable, so we cannot use it during training. Thus, during training phase 
+we add some noise which commensurate in amplitude with or quantization:
+
+![equation](https://latex.codecogs.com/svg.image?b_i%20=%20f_i%20&plus;%20%5Cfrac%7B1%7D%7B2%5EB%7D%5Ctimes%20%5Cmathcal%7BN%7D%5Cleft%20(%20-%5Cfrac%7B1%7D%7B2%7D;%5Cfrac%7B1%7D%7B2%7D%20%5Cright%20))
+
+Below you can find charts of PSNR/BPP comparison between JPG (low and high quality), AE(B=2) and AE(B=10) algorithms on three [test images](resources/test_images).
 
 ![Images comparison](resources/analytics/images_comparison.png)
 ![PSNR](resources/analytics/PSNR_BPP.png)
 
-As we can see, PSNR is similar on both soft and hard encoding. Both models perform worse than JPG in terms of PSNR.
-Nevertheless, AE(B=2) has much lower BPP which can be used for storage efficiency in some cases.
+As we can see, with almost identical BPP (for low quality and high quality images) JPG slightly outperforms encoding with the neural network.
+Better quality might be obtained using more complex model or with more training epochs.
 
 Below you can see usage example for coding and decoding. 3 test images were encoded with these commands. 
 You can run them all using [test_all.sh](test_all.sh)
