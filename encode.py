@@ -1,6 +1,5 @@
 from argparse import ArgumentParser
 
-import numpy as np
 import torch
 import torchvision.transforms as tf
 from PIL import Image

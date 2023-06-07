@@ -6,13 +6,12 @@ This repository contains source code for neural compressor. Model was build usin
 For encoder part pretrained ResNet18 was used. Decoder is mirrored representation of encoder with upsampling layers. 
 
 Latent vector obtained after encoding part is quantized (hard mode with B = 2 and sof mode with B = 10) 
-and then encoded using adaptive arithmetic encoding.
+and then encoded using adaptive arithmetic encoding. Embedding size is *1 x 32768* which is only *0.125* of the initial amount of pixels *(512 x 512)*.
 
 Below you can find charts of BPP and PSNR comparison between JPG, AE(B=2) and AE(B=10) algorithms on three [test images](resources/test_images).
 
 ![Images comparison](resources/analytics/images_comparison.png)
-![PSNR](resources/analytics/PSNR.png)
-![BPP](resources/analytics/BPP.png)
+![PSNR](resources/analytics/PSNR_BPP.png)
 
 As we can see, PSNR is similar on both soft and hard encoding. Both models perform worse than JPG in terms of PSNR.
 Nevertheless, AE(B=2) has much lower BPP which can be used for storage efficiency in some cases.
