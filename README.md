@@ -6,7 +6,10 @@ This repository contains source code for neural compressor. Model was build usin
 For encoder part pretrained ResNet18 was used. Decoder is mirrored representation of encoder with upsampling layers. 
 
 Latent vector obtained after encoding part is quantized (hard mode with B = 2 and sof mode with B = 10) 
-and then encoded using nonbinary adaptive arithmetic encoding. Embedding size is *1 x 32768* which is only *0.125* of the initial amount of pixels *(512 x 512)*.
+and then encoded using adaptive arithmetic encoding. Arithmetic encoder takes quantized vector with values in range [0; 2^B] as the input and outputs binary sequence.
+Encoding is performed using [arithmetic-compressor](https://github.com/kodejuice/arithmetic-compressor) python package. **SimpleAdaptiveModel** was used for probabilities update. 
+This model gradually forgets old statistics with exponential moving average.
+Embedding size is *1 x 32768* which is only *0.125* of the initial amount of pixels *(512 x 512)*. Smaller embeddings led to worse results (visually). Bigger ones might strongly increase final encoding size.
 Qunatization during inference is performed with this formula: 
 
 ![equation](https://latex.codecogs.com/svg.image?b_i%20=%20%5Clfloor%20f_i%5Ctimes%202%5EB%20&plus;%200.5%20%5Crfloor)
